@@ -21,14 +21,10 @@ def day_2_part_1():
         points = 0
 
         for game in games:
-            game_points = 0
             opponent_attack = get_attack_for_strategy(game[0])
             player_attack = get_attack_for_strategy(game[2])
-            game_points += get_point_for_attack(player_attack)
-            print(f"Points for attack {game_points}")
-            game_points += get_match_point(opponent_attack, player_attack)
-            print(f"Total points for game {game_points}")
-            points += game_points
+            points += get_point_for_attack(player_attack)
+            points += get_match_point(opponent_attack, player_attack)
 
         return points
 
@@ -39,19 +35,16 @@ def day_2_part_2():
         points = 0
 
         for game in games:
-            game_points = 0
             opponent_attack = get_attack_for_strategy(game[0])
             needed_outcome = get_outcome_for_strategy(game[2])
             player_attack = get_attack_for_outcome(opponent_attack, needed_outcome)
-            game_points += get_point_for_attack(player_attack)
-            game_points += get_match_point(opponent_attack, player_attack)
-            points += game_points
+            points += get_point_for_attack(player_attack)
+            points += get_match_point(opponent_attack, player_attack)
 
         return points
 
 
 def get_attack_for_strategy(strategy):
-    print(f"Strategy {strategy}")
     if strategy in ROCK:
         return Attack.Rock
     elif strategy in PAPER:
@@ -70,7 +63,6 @@ def get_point_for_attack(attack):
 
 
 def get_match_point(opponent_attack, player_attack):
-    print(f"opponent attack {opponent_attack}, player attack {player_attack}")
     if player_attack == opponent_attack:
         return DRAW_POINT
 
