@@ -1,5 +1,20 @@
+import os
+import sys
 
-from elf_controller import retrieve_calorie_for_elves
+
+def retrieve_calorie_for_elves():
+    with open(os.path.join(sys.path[0], 'day_1/input.txt')) as elven_data:
+        elves_calories = []
+        current_count = 0
+        for line in elven_data:
+            stripped_line = line.strip()
+            if not stripped_line:
+                elves_calories.append(current_count)
+                current_count = 0
+            else:
+                current_count = current_count + int(stripped_line)
+
+    return elves_calories
 
 
 def day_1_part_1():
