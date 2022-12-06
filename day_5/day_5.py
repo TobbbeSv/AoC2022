@@ -40,8 +40,7 @@ def move_creates_according_to_instructions(creates, instruction):
     index_divider = from_column_length - amount_of_creates
     columns_to_move = from_column[index_divider: from_column_length]
     creates[int(instruction[1]) - 1] = from_column[0: index_divider]
-    if isinstance(columns_to_move, list):
-        columns_to_move.reverse()
+    columns_to_move.reverse()
     to_column.extend(columns_to_move)
 
 
