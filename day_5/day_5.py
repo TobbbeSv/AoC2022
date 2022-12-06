@@ -8,8 +8,8 @@ INSTRUCTION_FROM_COLUMN = 1
 INSTRUCTION_TO_COLUMN = 2
 
 
-def day_5_part_1():
-    print("day 4 part 1")
+def day_5(is_part_1: bool):
+    print(f"day 5 part {1 if is_part_1 else 2}")
     with open(os.path.join(sys.path[0], 'day_5/input.txt')) as rows:
         creates = []
         instructions = []
@@ -20,7 +20,7 @@ def day_5_part_1():
             print(create)
 
         for index, instruction in enumerate(instructions):
-            move_creates_according_to_instructions(creates, instruction)
+            move_creates_according_to_instructions(creates, instruction, is_part_1)
             print("Columns during rearrangement")
             for create in creates:
                 print(create)
@@ -32,7 +32,7 @@ def day_5_part_1():
     return top_creates
 
 
-def move_creates_according_to_instructions(creates, instruction):
+def move_creates_according_to_instructions(creates, instruction, reverse):
     amount_of_creates = int(instruction[INSTRUCTION_AMOUNT_OF_CREATES])
     from_column = creates[int(instruction[INSTRUCTION_FROM_COLUMN]) - 1]
     to_column = creates[int(instruction[INSTRUCTION_TO_COLUMN]) - 1]
@@ -40,7 +40,8 @@ def move_creates_according_to_instructions(creates, instruction):
     index_divider = from_column_length - amount_of_creates
     columns_to_move = from_column[index_divider: from_column_length]
     creates[int(instruction[1]) - 1] = from_column[0: index_divider]
-    columns_to_move.reverse()
+    if reverse:
+        columns_to_move.reverse()
     to_column.extend(columns_to_move)
 
 
