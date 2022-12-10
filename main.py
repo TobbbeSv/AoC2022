@@ -4,7 +4,7 @@ from day_3.day_3 import day_3_part_1, day_3_part_2
 from day_4.day_4 import day_4_part_1, day_4_part_2
 from day_5.day_5 import day_5
 from day_6.day_6 import day_6
-from day_7.day_7 import day_7_part_1
+from day_7.day_7 import day_7
 
 
 def get_solution_for_day(solution_for_day: float):
@@ -33,11 +33,13 @@ def get_solution_for_day(solution_for_day: float):
     elif solution_for_day == 6.2:
         return day_6(False)
     elif solution_for_day == 7.1:
-        return day_7_part_1()
+        return day_7(True)
+    elif solution_for_day == 7.2:
+        return day_7(False)
 
 
 if __name__ == "__main__":
-    day = 7.1
+    day = 7.2
     print(f"Executing day {day}")
     solution = get_solution_for_day(day)
     print(f"The solution is {solution}")

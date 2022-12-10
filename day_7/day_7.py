@@ -1,10 +1,39 @@
 import os
 import sys
 
+TOTAL_DISC_SPACE = 70000000
+FREE_DISC_SPACE_NEEDED = 30000000
 DIRECTORY_TOTAL_MAX_SIZE = 100_000
 
 
-def day_7_part_1():
+def day_7(part_1: bool):
+    all_directories = get_all_directories()
+
+    sum_of_max_size_directories = 0
+    for directory_id in all_directories:
+        directory = all_directories[directory_id]
+        sub_directories = [item for item in all_directories.keys() if item.startswith(directory_id)]
+        for sub_id in sub_directories:
+            if sub_id != directory_id:
+                directory.total_sub_directories_size += all_directories[sub_id].file_sizes
+        if directory.total_sub_directories_size <= DIRECTORY_TOTAL_MAX_SIZE:
+            sum_of_max_size_directories += directory.total_sub_directories_size
+
+    if part_1:
+        return sum_of_max_size_directories
+    else:
+        free_space = TOTAL_DISC_SPACE - all_directories["root"].get_total_directory_size()
+
+        min_viable_directory_size = TOTAL_DISC_SPACE
+        for directory in all_directories.values():
+            total_directory_size = directory.get_total_directory_size()
+            if total_directory_size + free_space >= FREE_DISC_SPACE_NEEDED and total_directory_size < min_viable_directory_size:
+                min_viable_directory_size = total_directory_size
+
+        return min_viable_directory_size
+
+
+def get_all_directories():
     with open(os.path.join(sys.path[0], 'day_7/input.txt')) as commands:
         top_directory = Directory(
             parent_id="",
@@ -12,18 +41,7 @@ def day_7_part_1():
         )
         all_directories = {top_directory.id: top_directory}
         extract_directories(all_directories, commands, top_directory)
-
-        sum_of_max_size_directories = 0
-        for directory in all_directories:
-            sub_directories_sizes = all_directories[directory].file_sizes
-            sub_directories = [item for item in all_directories.keys() if item.startswith(directory)]
-            for sub_id in sub_directories:
-                if sub_id != directory:
-                    sub_directories_sizes += all_directories[sub_id].file_sizes
-            if sub_directories_sizes <= DIRECTORY_TOTAL_MAX_SIZE:
-                sum_of_max_size_directories += sub_directories_sizes
-
-    return sum_of_max_size_directories
+    return all_directories
 
 
 def extract_directories(all_directories, commands, top_directory):
@@ -71,6 +89,8 @@ def get_id(parent_id, name):
 
 
 class Directory:
+    total_sub_directories_size = 0
+
     def __init__(self, parent_id, name, directory_ids=None, file_sizes=0):
         if directory_ids is None:
             directory_ids = []
@@ -79,3 +99,6 @@ class Directory:
         self.name = name
         self.directory_ids = directory_ids
         self.file_sizes = file_sizes
+
+    def get_total_directory_size(self):
+        return self.total_sub_directories_size + self.file_sizes
